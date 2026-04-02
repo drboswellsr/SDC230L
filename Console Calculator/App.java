@@ -1,185 +1,68 @@
-/*
- * Darrien Raines-Boswell
- * Date: 03/23/2026
- * Assignment: SDC230 Week 3 - Arrays and Lists
- * Description: Console calculator with memory and array features
+/**
+ * Name: Darrien Raines-Boswell
+ * Date: April 1,2026
+ * Assignment: SDC230L Week 4 - Exception Handling Calculator
+ * Description: This program divides two numbers and handles errors like division by zero and invalid input.
  */
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
-
     public static void main(String[] args) {
 
         Scanner input = new Scanner(System.in);
+        boolean running = true;
 
-        // =========================
-        // TITLE + WELCOME
-        // =========================
-        System.out.println("SDC230 Week 3 Project - Arrays and Lists");
-        System.out.println("Created by: Darrien Raines-Boswell\n");
+        // Title
+        System.out.println("Darrien Raines-Boswell - SDC230L Week 4 Exception Handling Calculator\n");
 
-        System.out.println("Welcome to the Calculator Program!");
-        System.out.println("This program allows you to store values and perform calculations.\n");
+        // Welcome message
+        System.out.println("Welcome to the Division Calculator!");
+        System.out.println("You can divide two numbers safely.");
+        System.out.println("Type 'q' at any time to quit.\n");
 
-        // =========================
-        // MEMORY VARIABLES
-        // =========================
-        double memoryValue = 0;
-        boolean hasValue = false;
+        while (running) {
+            try {
+                // First number
+                System.out.print("Enter first number: ");
+                String firstInput = input.nextLine();
 
-        ArrayList<Integer> numbers = new ArrayList<>();
-
-        int choice;
-
-        do {
-            // =========================
-            // MENU
-            // =========================
-            System.out.println("\n===== MENU =====");
-            System.out.println("1. Store single value");
-            System.out.println("2. Retrieve value");
-            System.out.println("3. Clear value");
-            System.out.println("4. Replace value");
-
-            System.out.println("\n--- Array Options ---");
-            System.out.println("5. Add number (max 10)");
-            System.out.println("6. Display all numbers");
-            System.out.println("7. Count numbers");
-            System.out.println("8. Remove a number");
-
-            System.out.println("\n--- Calculations ---");
-            System.out.println("9. Sum");
-            System.out.println("10. Average");
-            System.out.println("11. Difference (first - last)");
-
-            System.out.println("\n12. Quit");
-
-            System.out.print("Enter choice: ");
-            choice = input.nextInt();
-
-            switch (choice) {
-
-                // =========================
-                // SINGLE MEMORY
-                // =========================
-                case 1:
-                    System.out.print("Enter value to store: ");
-                    memoryValue = input.nextDouble();
-                    hasValue = true;
-                    System.out.println("Value stored.");
+                if (firstInput.equalsIgnoreCase("q")) {
                     break;
+                }
 
-                case 2:
-                    if (hasValue)
-                        System.out.println("Stored value: " + memoryValue);
-                    else
-                        System.out.println("No value stored.");
+                double num1 = Double.parseDouble(firstInput);
+
+                // Second number
+                System.out.print("Enter second number: ");
+                String secondInput = input.nextLine();
+
+                if (secondInput.equalsIgnoreCase("q")) {
                     break;
+                }
 
-                case 3:
-                    memoryValue = 0;
-                    hasValue = false;
-                    System.out.println("Memory cleared.");
-                    break;
+                double num2 = Double.parseDouble(secondInput);
 
-                case 4:
-                    if (hasValue) {
-                        System.out.print("Enter new value: ");
-                        memoryValue = input.nextDouble();
-                        System.out.println("Value replaced.");
-                    } else {
-                        System.out.println("No value to replace.");
-                    }
-                    break;
+                // Check divide by zero
+                if (num2 == 0) {
+                    throw new ArithmeticException("Cannot divide by zero!");
+                }
 
-                // =========================
-                // ARRAY FEATURES
-                // =========================
-                case 5:
-                    if (numbers.size() < 10) {
-                        System.out.print("Enter number: ");
-                        numbers.add(input.nextInt());
-                        System.out.println("Added.");
-                    } else {
-                        System.out.println("Array is full (max 10).");
-                    }
-                    break;
+                // Division
+                double result = num1 / num2;
+                System.out.println("Result: " + result + "\n");
 
-                case 6:
-                    if (numbers.isEmpty()) {
-                        System.out.println("No values stored.");
-                    } else {
-                        System.out.println("Values: " + numbers);
-                    }
-                    break;
+            } catch (ArithmeticException e) {
+                System.out.println("Error: " + e.getMessage());
+                System.out.println("Please enter a non-zero second number.\n");
 
-                case 7:
-                    System.out.println("Count: " + numbers.size());
-                    break;
-
-                case 8:
-                    if (!numbers.isEmpty()) {
-                        System.out.print("Enter index to remove (0 - " + (numbers.size()-1) + "): ");
-                        int index = input.nextInt();
-
-                        if (index >= 0 && index < numbers.size()) {
-                            numbers.remove(index);
-                            System.out.println("Removed.");
-                        } else {
-                            System.out.println("Invalid index.");
-                        }
-                    } else {
-                        System.out.println("Array is empty.");
-                    }
-                    break;
-
-                // =========================
-                // CALCULATIONS
-                // =========================
-                case 9:
-                    int sum = 0;
-                    for (int num : numbers) {
-                        sum += num;
-                    }
-                    System.out.println("Sum: " + sum);
-                    break;
-
-                case 10:
-                    if (!numbers.isEmpty()) {
-                        int total = 0;
-                        for (int num : numbers) {
-                            total += num;
-                        }
-                        double avg = (double) total / numbers.size();
-                        System.out.println("Average: " + avg);
-                    } else {
-                        System.out.println("No values.");
-                    }
-                    break;
-
-                case 11:
-                    if (numbers.size() >= 2) {
-                        int first = numbers.get(0);
-                        int last = numbers.get(numbers.size() - 1);
-                        System.out.println("Difference: " + (first - last));
-                    } else {
-                        System.out.println("Need at least 2 values.");
-                    }
-                    break;
-
-                case 12:
-                    System.out.println("\nThank you for using the program!");
-                    System.out.println("Defend Your Own.");
-                    break;
-
-                default:
-                    System.out.println("Invalid choice.");
+            } catch (NumberFormatException e) {
+                System.out.println("Error: Invalid input. Please enter numbers only.\n");
             }
+        }
 
-        } while (choice != 12);
-
+        // Closing message
+        System.out.println("\nThank you for using the calculator. Defend Your Own.");
         input.close();
     }
 }
