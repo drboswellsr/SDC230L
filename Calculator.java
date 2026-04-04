@@ -1,3 +1,10 @@
+/*
+ * Darrien Raines-Boswell
+ * Course: SDC230
+ * Assignment: 5.2 Project Application Delivery
+ * Description: Calculator class for math operations.
+ */
+
 public class Calculator {
 
     public double add(double a, double b) {
@@ -14,9 +21,19 @@ public class Calculator {
 
     public double divide(double a, double b) {
         if (b == 0) {
-            System.out.println("Error: Division by zero is not allowed.");
-            return 0;
+            throw new ArithmeticException("Cannot divide by zero.");
         }
         return a / b;
+    }
+
+    public double power(double base, double exponent) {
+        return Math.pow(base, exponent);
+    }
+
+    public double squareRoot(double num) {
+        if (num < 0) {
+            throw new IllegalArgumentException("Cannot use negative number.");
+        }
+        return Math.sqrt(num);
     }
 }
